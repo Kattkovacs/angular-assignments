@@ -14,18 +14,18 @@
 <body ng-app="LunchCheck">
    <div class="container" ng-controller='LunchCheckController'>
      <h1>Lunch Checker</h1>
-      <div >
-          <input type="text"
+      <div class="form-group">
+          <input type="text" id="lunch-menu"
           placeholder="list comma separated dishes you usually have for lunch"
           ng-model="listOfDishes"/>
       </div>
-      <div>
+      <div class="form-group">
           <button ng-click="checkListValue()">Check If Too Much</button>
       </div>
-      <div>
-        {{sayMessage()}}
+      <div class="form-group message">
+        <h4 ng-bind="sayMessage()" 
+        ng-style="{'color': textColor}" style="font-weight: bold;"></h4>
       </div>
    </div>
-
 </body>
 </html>
