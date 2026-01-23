@@ -5,34 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles/bootstrap.min.css">
     <link rel="stylesheet" href="styles/styles.css">
-        <script src="angular.min.js"></script>
-    <script src="app.js"></script>
+
   </head>
 <body ng-app="NarrowItDownApp">
-   <div class="container" ng-controller="NarrowItDownController as narrowDown" id="narrow-down">
-    <h1>Narrow Down Your Chinese Menu Choice</h1>
-    <div>
-
-      <ol>
-        <li ng-repeat="item in narrowDown.menuItems"> 
-          {{ item.name }} 
-        </li>
-         </ol>
+   <div class="container ng-scope" ng-controller="NarrowItDownController as ctrl" id="ctrl">
+    <h1>Narrow Down Your Menu</h1>
+    <div>  
         <div class="form-group">
-          <input type="text" ng-model="narrowDown.searchTerm" placeholder="search term" class="form-control">
+          <input type="text" ng-model="ctrl.searchTerm" placeholder="search term" class="form-control" id="search-term">
         </div>
         <div class="form-group narrow-button">
-          <button ng-click="narrowDown.getMatchedMenuItems(narrowDown.searchTerm)" class="btn btn-primary">Narrow It Down For Me!</button>
+          <button ng-click="ctrl.narrowItDown()" class="btn btn-primary">Narrow It Down For Me!</button>               
+          <found-items found="ctrl.found" ng-if="ctrl.searched" on-remove="ctrl.removeItem(index)" class="ng-scope"></found-items>   
         </div>
-      </ol>
-    </div>
-  </br>
-    <div ng-if="narrowDown.found.length != 0">
-    
-      <found-items items="narrowDown.found" on-remove="narrowDown.removeItem(index)"></found-items>
     </div>
   </div>
-  </div>
+          <script src="angular.min.js"></script>
+    <script src="app.js"></script>
 
 </body>
 </html>

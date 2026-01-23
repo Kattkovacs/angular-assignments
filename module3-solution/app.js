@@ -1,89 +1,77 @@
-
-
 (function () {
-    'use strict';
+  'use strict';
 
-    angular.module('NarrowItDownApp', [])
-        .controller('NarrowItDownController', NarrowItDownController)
-        .factory('MenuSearchService', MenuSearchService)
-        .directive('foundItems', FoundItemsDirective)
-        .constant('ApiBasePath', 'https://coursera-jhu-default-rtdb.firebaseio.com/');
+  angular.module('NarrowItDownApp', [])
+    .controller('NarrowItDownController', NarrowItDownController)
+    .service('MenuSearchService', MenuSearchService)
+    .directive('foundItems', FoundItemsDirective);
 
-NarrowItDownController.$inject = ['MenuSearchService'];
-        function NarrowItDownController(MenuSearchService) {
-        var ctrl = this;
-        var menuSearch = MenuSearchService(searchTerm);
-        ctrl.items = menuSearch.getMenuItems(searchTerm);
+  function FoundItemsDirective() {
+    var ddo = {
+      restrict: 'E',
+      templateUrl: 'foundItems.html',
+      scope: {
+        found: '<',
+        onRemove: '&'
+      }
+    };
+    return ddo;
+  }
 
-        // ctrl.getMatchedMenuItems = function(searchTerm) {
-        //     MenuSearchService.getMenuItems(searchTerm)
-        //         .then(function(menuItems) {
-        //            console.log(menuItems)
-        //             ctrl.items = menuItems;
-        //             console.log(ctrl.items)
-        //         });
-        // };
-        ctrl.removeItem = function(index) {
-            ctrl.items.splice(index, 1);
-        };
-    }
+  NarrowItDownController.$inject = ['MenuSearchService'];
+  function NarrowItDownController(MenuSearchService) {
+    var ctrl = this;
+    ctrl.searchTerm = "";
+    ctrl.found = [];
+    ctrl.searched = false;
 
-    function MenuSearchService($http, ApiBasePath) {
-        var service = this;
+    ctrl.narrowItDown = function () {
+      ctrl.searched = true;
+      
+      if (!ctrl.searchTerm || ctrl.searchTerm.trim() === "") {
+        ctrl.found = [];
+        return;
+      }
 
-        service.getMenuItems = function(searchTerm) {
-            return $http.get(ApiBasePath + 'menu_items.json')
-                .then(function(response) {
-                    return service.filterMenuItems(response.data, searchTerm);
-                });
-        };
-
-       service.filterMenuItems = function(menuItems, searchTerm) {
-    var foundItems = [];
-
-    Object.keys(menuItems).forEach(function(key) {
-      var found = [];
-        var menuItemsArray = menuItems[key].menu_items;
-        // console.log(menuItemsArray)
-        if (menuItemsArray.length > 0) {
-            found = menuItemsArray.filter(function(item) {
-              return item.description && searchTerm && item.description.toLowerCase().includes(searchTerm.toLowerCase());
-            });
-          }
-          if (found.length > 0) {  
-              foundItems.push({menu_items: found});
-          }
+      MenuSearchService.getMatchedMenuItems(ctrl.searchTerm)
+        .then(function (results) {
+          ctrl.found = results;
         });
-    console.log(service.flattenMenuItems(foundItems));
-    return service.flattenMenuItems(foundItems);
-};
+    };
 
-        service.flattenMenuItems = function(menuItems) {
-          console.log(menuItems);
-            return menuItems.reduce(function(prev, curr) {
-                return prev.concat(curr.menu_items);
-            }, []);
-        };
-    }
+    ctrl.removeItem = function (index) {
+      ctrl.found.splice(index, 1);
+    };
+  }
 
-    function FoundItemsDirective() {
-        var directive = {      
-            scope: {
-                items: '=',
-                onRemove: '&',
-            },
-            templateUrl: 'foundItems.html',
-            controller: NarrowItDownController,
-            controllerAs: 'ctrl',
-            bindToController: true
-        };
+  MenuSearchService.$inject = ['$http'];
+  function MenuSearchService($http) {
+    var service = this;
 
-        return directive;
-    }
-    // FoundItemsController.$inject = ['MenuSearchService'];
+    service.getMatchedMenuItems = function (searchTerm) {
+      return $http({
+        method: "GET",
+        url: "https://coursera-jhu-default-rtdb.firebaseio.com/menu_items.json"
+      }).then(function (result) {
+        var allItems = [];
+            var foundItems = [];
+            
+            // Iterate through all categories and collect all menu items
+            for (var category in result.data) {
+              if (result.data[category].menu_items) {
+                allItems = allItems.concat(result.data[category].menu_items);
+              }
+            }
 
-    // function FoundItemsController() {
-    //     var ctrl = this;
-    //      console.log(ctrl.items); 
-    // }
+            // Filter items by search term
+            for (var i = 0; i < allItems.length; i++) {
+              if (allItems[i].description.toLowerCase().indexOf(searchTerm.toLowerCase()) !== -1) {
+                foundItems.push(allItems[i]);
+              }
+            }
+
+        return foundItems;
+      });
+    };
+  }
 })();

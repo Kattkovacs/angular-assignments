@@ -1,9 +1,11 @@
-<h3>Found Items</h3>
-<p>{{ $ctrl.items.length }} items found</p>
-<ol>
-  <li ng-repeat="item in $ctrl.items">
-    {{ item.name }} - {{ item.short_name }} - {{ item.description }}
-    <button ng-click="$ctrl.onRemove(item, $index);">Remove Item</button>
+<h3 ng-if="found.length > 0">Found Items</h3>
+<p ng-if="found.length > 0">{{ found.length }} items found</p>
+<h3 ng-if="found.length == 0">No items found</h3>
+<ul>
+  <li ng-repeat="item in found" class="ng-binding ng-scope">
+    <strong>Item {{$index + 1}}:</strong>
+    {{ item.name }} | {{ item.short_name }} | {{ item.description }}
+    <button ng-click="onRemove(item, $index);">Remove Item</button>
   </li>
-</ol>
+</ul>
 
