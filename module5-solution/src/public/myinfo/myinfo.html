@@ -1,0 +1,62 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+
+      <!-- Not signed up yet -->
+      <div ng-if="!myInfoCtrl.userInfo">
+        <p class="lead">
+          Not Signed Up Yet.
+          <a ui-sref="public.signup">Sign up Now!</a>
+        </p>
+      </div>
+
+      <!-- Signed-up user info -->
+      <div ng-if="myInfoCtrl.userInfo">
+        <h2>My Information</h2>
+
+        <table class="table table-striped">
+          <tbody>
+            <tr>
+              <th>First Name</th>
+              <td>{{ myInfoCtrl.userInfo.firstName }}</td>
+            </tr>
+            <tr>
+              <th>Last Name</th>
+              <td>{{ myInfoCtrl.userInfo.lastName }}</td>
+            </tr>
+            <tr>
+              <th>Email</th>
+              <td>{{ myInfoCtrl.userInfo.email }}</td>
+            </tr>
+            <tr>
+              <th>Phone</th>
+              <td>{{ myInfoCtrl.userInfo.phone }}</td>
+            </tr>
+            <tr>
+              <th>Favourite Menu Item</th>
+              <td>{{ myInfoCtrl.userInfo.favMenuNumber }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Favourite menu item details -->
+        <div ng-if="myInfoCtrl.userInfo.menuItem" class="well">
+          <h3>Favourite Dish</h3>
+          <div class="row">
+            <div class="col-sm-4">
+              <img class="img-responsive"
+                   ng-src="images/menu/{{ myInfoCtrl.getCategory(myInfoCtrl.userInfo.menuItem.short_name) }}/{{ myInfoCtrl.userInfo.menuItem.short_name }}.jpg"
+                   alt="{{ myInfoCtrl.userInfo.menuItem.name }}">
+            </div>
+            <div class="col-sm-8">
+              <h4>{{ myInfoCtrl.userInfo.menuItem.name }}</h4>
+              <p>{{ myInfoCtrl.userInfo.menuItem.description }}</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

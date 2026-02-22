@@ -1,0 +1,145 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-8 col-sm-offset-2">
+
+      <h2>Sign Up for Our Newsletter</h2>
+      <p class="text-muted">Fields marked <span class="text-danger">*</span> are required.</p>
+
+      <form name="signupForm" novalidate>
+
+        <!-- First Name -->
+        <div class="form-group"
+             ng-class="{'has-error': signupForm.firstName.$invalid && (signupForm.firstName.$touched || signupForm.$submitted)}">
+          <label for="firstName">
+            First Name <span class="text-danger">*</span>
+          </label>
+          <input type="text"
+                 class="form-control"
+                 id="firstName"
+                 name="firstName"
+                 ng-model="signupCtrl.user.firstName"
+                 required
+                 ng-minlength="2"
+                 placeholder="Enter your first name">
+          <span class="help-block"
+                ng-show="(signupForm.firstName.$touched || signupForm.$submitted) && signupForm.firstName.$error.required">
+            First name is required.
+          </span>
+          <span class="help-block"
+                ng-show="(signupForm.firstName.$touched || signupForm.$submitted) && signupForm.firstName.$error.minlength">
+            First name must be at least 2 characters.
+          </span>
+        </div>
+
+        <!-- Last Name -->
+        <div class="form-group"
+             ng-class="{'has-error': signupForm.lastName.$invalid && (signupForm.lastName.$touched || signupForm.$submitted)}">
+          <label for="lastName">
+            Last Name <span class="text-danger">*</span>
+          </label>
+          <input type="text"
+                 class="form-control"
+                 id="lastName"
+                 name="lastName"
+                 ng-model="signupCtrl.user.lastName"
+                 required
+                 ng-minlength="2"
+                 placeholder="Enter your last name">
+          <span class="help-block"
+                ng-show="(signupForm.lastName.$touched || signupForm.$submitted) && signupForm.lastName.$error.required">
+            Last name is required.
+          </span>
+          <span class="help-block"
+                ng-show="(signupForm.lastName.$touched || signupForm.$submitted) && signupForm.lastName.$error.minlength">
+            Last name must be at least 2 characters.
+          </span>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group"
+             ng-class="{'has-error': signupForm.email.$invalid && (signupForm.email.$touched || signupForm.$submitted)}">
+          <label for="email">
+            Email Address <span class="text-danger">*</span>
+          </label>
+          <input type="email"
+                 class="form-control"
+                 id="email"
+                 name="email"
+                 ng-model="signupCtrl.user.email"
+                 required
+                 placeholder="Enter your email">
+          <span class="help-block"
+                ng-show="(signupForm.email.$touched || signupForm.$submitted) && signupForm.email.$error.required">
+            Email is required.
+          </span>
+          <span class="help-block"
+                ng-show="(signupForm.email.$touched || signupForm.$submitted) && signupForm.email.$error.email">
+            Please enter a valid email address.
+          </span>
+        </div>
+
+        <!-- Phone -->
+        <div class="form-group"
+             ng-class="{'has-error': signupForm.phone.$invalid && (signupForm.phone.$touched || signupForm.$submitted)}">
+          <label for="phone">
+            Phone Number <span class="text-danger">*</span>
+          </label>
+          <input type="tel"
+                 class="form-control"
+                 id="phone"
+                 name="phone"
+                 ng-model="signupCtrl.user.phone"
+                 required
+                 ng-pattern="/^\d{3}-?\d{3}-?\d{4}$/"
+                 placeholder="e.g. 410-602-5008">
+          <span class="help-block"
+                ng-show="(signupForm.phone.$touched || signupForm.$submitted) && signupForm.phone.$error.required">
+            Phone number is required.
+          </span>
+          <span class="help-block"
+                ng-show="(signupForm.phone.$touched || signupForm.$submitted) && signupForm.phone.$error.pattern">
+            Please enter a valid 10-digit phone number (e.g. 410-602-5008).
+          </span>
+        </div>
+
+        <!-- Favorite Menu Number -->
+        <div class="form-group"
+             ng-class="{'has-error': signupCtrl.menuItemError}">
+          <label for="favMenuNumber">
+            Favorite Menu Item Number
+          </label>
+          <input type="text"
+                 class="form-control"
+                 id="favMenuNumber"
+                 name="favMenuNumber"
+                 ng-model="signupCtrl.user.favMenuNumber"
+                 placeholder="e.g. L1, SP3, CM2">
+          <span class="help-block text-danger"
+                ng-show="signupCtrl.menuItemError">
+            {{ signupCtrl.menuItemError }}
+          </span>
+          <span class="help-block text-muted">
+            Enter the short name of your favourite menu item (e.g. L1, SP3).
+          </span>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit"
+                class="btn btn-primary"
+                ng-click="signupCtrl.submit(signupForm)"
+                ng-disabled="signupCtrl.submitting">
+          <span ng-show="signupCtrl.submitting">Submitting...</span>
+          <span ng-hide="signupCtrl.submitting">Submit</span>
+        </button>
+
+      </form>
+
+      <!-- Success Message -->
+      <div class="alert alert-success margin-top-medium"
+           ng-show="signupCtrl.savedMessage">
+        Your information has been saved.
+      </div>
+
+    </div>
+  </div>
+</div>
