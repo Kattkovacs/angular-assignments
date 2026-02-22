@@ -29,6 +29,11 @@ function validateMenuItem(UserService, $q) {
           return $q.when(true);
         }
 
+        // Wrong format: let ng-pattern handle it; skip the HTTP call
+        if (!/^[A-Za-z]+\d+$/.test(value.trim())) {
+          return $q.when(true);
+        }
+
         return UserService.findMenuItem(value.trim())
           .then(function (item) {
             if (item) {

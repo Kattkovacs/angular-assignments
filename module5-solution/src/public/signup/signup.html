@@ -104,7 +104,9 @@
 
         <!-- Favorite Menu Number -->
         <div class="form-group"
-             ng-class="{'has-error': (signupForm.favMenuNumber.$error.menuItem || signupCtrl.menuItemError) &&
+             ng-class="{'has-error': (signupForm.favMenuNumber.$error.pattern ||
+                                      signupForm.favMenuNumber.$error.menuItem ||
+                                      signupCtrl.menuItemError) &&
                                      (signupForm.favMenuNumber.$touched || signupForm.$submitted)}">
           <label for="favMenuNumber">
             Favorite Menu Item Number
@@ -115,9 +117,16 @@
                  name="favMenuNumber"
                  ng-model="signupCtrl.user.favMenuNumber"
                  validate-menu-item
+                 ng-pattern="/^[A-Za-z]+\d+$/"
                  ng-model-options="{ updateOn: 'blur' }"
                  ng-change="signupCtrl.menuItemError = null; signupCtrl.savedMessage = false"
                  placeholder="e.g. L1, SP3, CM2">
+          <!-- Pattern mismatch -->
+          <span class="help-block text-danger"
+                ng-show="signupForm.favMenuNumber.$error.pattern &&
+                         (signupForm.favMenuNumber.$touched || signupForm.$submitted)">
+            Please use the format: one or more letters followed by a number (e.g. L1, SP3, CM2).
+          </span>
           <!-- Async validation in progress (spinner) -->
           <span class="help-block text-muted"
                 ng-show="signupForm.favMenuNumber.$pending.menuItem">
