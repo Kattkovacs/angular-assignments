@@ -116,6 +116,7 @@
                  ng-model="signupCtrl.user.favMenuNumber"
                  validate-menu-item
                  ng-model-options="{ updateOn: 'blur' }"
+                 ng-change="signupCtrl.menuItemError = null; signupCtrl.savedMessage = false"
                  placeholder="e.g. L1, SP3, CM2">
           <!-- Async validation in progress (spinner) -->
           <span class="help-block text-muted"
