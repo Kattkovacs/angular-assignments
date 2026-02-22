@@ -5,15 +5,17 @@ describe('UserService', function () {
 
   var UserService;
   var $httpBackend;
+  var $rootScope;
   var BASE = 'https://coursera-jhu-default-rtdb.firebaseio.com/menu_items';
 
   // Load the common module before each test
   beforeEach(module('common'));
 
   // Inject the service and $httpBackend mock
-  beforeEach(inject(function (_UserService_, _$httpBackend_) {
+  beforeEach(inject(function (_UserService_, _$httpBackend_, _$rootScope_) {
     UserService  = _UserService_;
     $httpBackend = _$httpBackend_;
+    $rootScope   = _$rootScope_;
   }));
 
   afterEach(function () {
@@ -68,7 +70,8 @@ describe('UserService', function () {
         result = item;
       });
 
-      // No HTTP call should have been made
+      // No HTTP call made – flush the $q promise with a digest cycle
+      $rootScope.$apply();
       $httpBackend.verifyNoOutstandingRequest();
       expect(result).toBeNull();
     });
@@ -79,6 +82,8 @@ describe('UserService', function () {
         result = item;
       });
 
+      // No HTTP call made – flush the $q promise with a digest cycle
+      $rootScope.$apply();
       $httpBackend.verifyNoOutstandingRequest();
       expect(result).toBeNull();
     });
