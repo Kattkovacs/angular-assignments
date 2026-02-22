@@ -119,6 +119,32 @@ a[ui-sref="admin.auth"] {
 }
 /* END FOOTER */
 
+/* MY INFO / SIGN UP – dark theme overrides for Bootstrap wells and tables */
+.well {
+  background-color: #4a0d24;
+  border-color: #7a1a40;
+  color: #fff;
+}
+
+.table {
+  color: #fff;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.table-striped > tbody > tr:nth-of-type(even) {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.table > tbody > tr > th,
+.table > tbody > tr > td {
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+/* END MY INFO / SIGN UP */
+
 /********** Medium devices only **********/
 @media (min-width: 992px) and (max-width: 1199px) {
   /* Header */
