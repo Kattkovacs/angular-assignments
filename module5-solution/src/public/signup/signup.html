@@ -104,7 +104,8 @@
 
         <!-- Favorite Menu Number -->
         <div class="form-group"
-             ng-class="{'has-error': signupCtrl.menuItemError}">
+             ng-class="{'has-error': (signupForm.favMenuNumber.$error.menuItem || signupCtrl.menuItemError) &&
+                                     (signupForm.favMenuNumber.$touched || signupForm.$submitted)}">
           <label for="favMenuNumber">
             Favorite Menu Item Number
           </label>
@@ -113,12 +114,30 @@
                  id="favMenuNumber"
                  name="favMenuNumber"
                  ng-model="signupCtrl.user.favMenuNumber"
+                 validate-menu-item
+                 ng-model-options="{ updateOn: 'blur' }"
                  placeholder="e.g. L1, SP3, CM2">
+          <!-- Async validation in progress (spinner) -->
+          <span class="help-block text-muted"
+                ng-show="signupForm.favMenuNumber.$pending.menuItem">
+            <span class="glyphicon glyphicon-refresh"></span> Checking menu item...
+          </span>
+          <!-- Async validator rejected (on blur) -->
           <span class="help-block text-danger"
-                ng-show="signupCtrl.menuItemError">
+                ng-show="signupForm.favMenuNumber.$error.menuItem &&
+                         (signupForm.favMenuNumber.$touched || signupForm.$submitted)">
+            No such menu number exists.
+          </span>
+          <!-- Submit-time error (user never blurred the field) -->
+          <span class="help-block text-danger"
+                ng-show="signupCtrl.menuItemError &&
+                         !signupForm.favMenuNumber.$error.menuItem">
             {{ signupCtrl.menuItemError }}
           </span>
-          <span class="help-block text-muted">
+          <span class="help-block text-muted"
+                ng-hide="signupForm.favMenuNumber.$pending.menuItem ||
+                         signupForm.favMenuNumber.$error.menuItem ||
+                         signupCtrl.menuItemError">
             Enter the short name of your favourite menu item (e.g. L1, SP3).
           </span>
         </div>
